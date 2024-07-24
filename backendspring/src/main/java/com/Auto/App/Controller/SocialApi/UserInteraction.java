@@ -21,6 +21,7 @@ import  com.Auto.App.Entity.User.User;
 import  com.Auto.App.Entity.User.UserRepository;
 
 import  lombok.RequiredArgsConstructor;
+
 @RestController
 @RequestMapping("/api/v1/Friendship")
 @CrossOrigin(origins = "http://localhost:3000/")
@@ -28,6 +29,17 @@ import  lombok.RequiredArgsConstructor;
 public class UserInteraction {
     private final UserRepository userRepository;
     private final FriendsRepository friendsRepository;
+
+    @GetMapping("/main/{userId}")
+    public UserInfo GetMainUserInfo(@PathVariable String userId) {
+        UUID user_id = UUID.fromString(userId);
+        User user = userRepository.finduser(user_id);
+        if (user == null) {
+            return null;
+        }
+        return UserInfo.builder().email(user.getEmail()).id(user.getId()).image(user.getImagebase64()).build();
+    }
+    
     @GetMapping("/getallusers")
     public List<UserInfo> getAllUsers() {
         List<UserInfo> usersresultInfos = new ArrayList<>(); 

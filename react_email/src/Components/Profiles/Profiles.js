@@ -1,7 +1,9 @@
+/* eslint-disable no-unused-vars */
 import { Tooltip } from 'primereact/tooltip';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import styles from './Profiles.module.css'; // Assuming you have a CSS module for styling
+import styles from './Profiles.module.css';
+import MainUserInfo from './MainUser';
 
 // Profile component to render individual user profile
 const Profile = ({ user, token }) => (
@@ -15,7 +17,7 @@ const Profile = ({ user, token }) => (
       </div>
     </div>
     <div
-      className={styles.addFriend}
+      className={styles.actionButton}
       onClick={async () => {
         try {
           const response = await axios.post('http://localhost:8080/api/v1/Friendship/sendrequest', {
@@ -35,7 +37,9 @@ const Profile = ({ user, token }) => (
     >
       Add Friend
     </div>
-    <div className={styles.removeFriend}>Remove</div>
+    <div className={styles.actionButton}>
+      Remove
+    </div>
   </div>
 );
 
@@ -50,7 +54,7 @@ const RequestFriendship = ({ user, token }) => (
       </div>
     </div>
     <div
-      className={styles.addFriend}
+      className={styles.actionButton}
       onClick={async () => {
         try {
           const response = await axios.post('http://localhost:8080/api/v1/Friendship/acceptrequest/', {
@@ -70,24 +74,27 @@ const RequestFriendship = ({ user, token }) => (
     >
       Accept Friend
     </div>
-    <div className={styles.removeFriend}>Remove RequestFriendship</div>
-  </div>
-);
-const YourFriends = ({ user, token }) => (
-  <div>
-    <div className={styles.profile} key={user.id}>
-      <div className={styles.profileHeader}>
-        <div className={styles.profileText}>
-          {user.email? <p className={styles.email}>{user.email.substring(0, 7)}</p> : null}
-        </div>
-        <div className={styles.profileImage}>
-          {user.image? <img src={user.image} alt='profile' className={styles.image} /> : null}
-        </div>
-      </div>
-      <div className='openchat'>Chat your Friend</div>
+    <div className={styles.actionButton}>
+      Remove RequestFriendship
     </div>
   </div>
-)
+);
+
+const YourFriends = ({ user, token }) => (
+  <div className={styles.profile} key={user.id}>
+    <div className={styles.profileHeader}>
+      <div className={styles.profileText}>
+        {user.email ? <p className={styles.email}>{user.email.substring(0, 7)}</p> : null}
+      </div>
+      <div className={styles.profileImage}>
+        {user.image ? <img src={user.image} alt='profile' className={styles.image} /> : null}
+      </div>
+    </div>
+    <div className={styles.chatButton}>
+      Chat your Friend
+    </div>
+  </div>
+);
 
 export default function Profiles() {
   const [users, setUsers] = useState([]);
@@ -118,6 +125,7 @@ export default function Profiles() {
         setLoading(false);
       }
     };
+
     const getFriends = async () => {
       try {
         setLoading(true);
@@ -133,7 +141,7 @@ export default function Profiles() {
         setLoading(false);
       }
     };
-  
+
     // Function to get all request profiles
     const getAllRequestProfiles = async () => {
       try {
@@ -150,111 +158,76 @@ export default function Profiles() {
         setLoading(false);
       }
     };
-  
+
     const fetchData = () => {
       getAllProfiles();
       getAllRequestProfiles();
       getFriends();
     };
-  
+
     fetchData(); // Initial fetch
-  
+
     const interval = setInterval(fetchData, 5000); // Fetch every 5 seconds
-  
+
     return () => clearInterval(interval); // Cleanup interval on component unmount
   }, [token]);
-  
+
   return (
     <>
-      <div style={{
-        display: 'block',
-        maxWidth: '350px',
-        height: '650px',
-        left:'0'
-      }}>
-        <div
-          className={styles.friendsButton}
-          onClick={() => {
-        
-            setShowUsers(!showUsers);
-            setShowRequests(false);
-          }}
-          
-        >
-          <i
-            className="pi pi-users"
-            style={{ fontSize: '3.5em', color: 'var(--primary-color)' }}
-            data-pr-tooltip="Friends"
-            data-pr-position="top"
-          />
-          <span className={styles.friendsText}>New Users </span>
-          <Tooltip target=".pi-users" />
+      <MainUserInfo />
+      <div className={styles.container}>
+        <div className={styles.sidebar}>
+          <div
+            className={styles.friendsButton}
+            onClick={() => {
+              setShowUsers(!showUsers);
+              setShowRequests(false);
+              setShowFriends(false);
+            }}
+          >
+            <i className="pi pi-users" data-pr-tooltip="New Users" data-pr-position="top" />
+            <span className={styles.friendsText}>New Users</span>
+            <Tooltip target=".pi-users" />
+          </div>
+          <div
+            className={styles.friendsButton}
+            onClick={() => {
+              setShowRequests(!showRequests);
+              setShowUsers(false);
+              setShowFriends(false);
+            }}
+          >
+            <i className="pi pi-user-plus" data-pr-tooltip="Requests Friends" data-pr-position="top" />
+            <span className={styles.friendsText}>Request Friendship</span>
+            <Tooltip target=".pi-user-plus" />
+          </div>
+          <div
+            className={styles.friendsButton}
+            onClick={() => {
+              setShowFriends(!showFriends);
+              setShowUsers(false);
+              setShowRequests(false);
+            }}
+          >
+            <i className="pi pi-user" data-pr-tooltip="Friends" data-pr-position="top" />
+            <span className={styles.friendsText}>Friends</span>
+            <Tooltip target=".pi-user" />
+          </div>
         </div>
-        <div className={styles.profileContainer}>
+        <div className={styles.content}>
           {loading ? (
             <p>Loading...</p>
           ) : error ? (
             <p>{error}</p>
           ) : showUsers ? (
             users.map((user) => <Profile key={user.id} user={user} token={token} />)
+          ) : showRequests ? (
+            requests.map((user) => <RequestFriendship key={user.id} user={user} token={token} />)
+          ) : showFriends ? (
+            friends.map((user) => <YourFriends key={user.id} user={user} token={token} />)
           ) : null}
         </div>
-        <div
-       className={styles.friendsButton}
-      onClick={() => {
-      setShowRequests(!showRequests);
-    setShowUsers(false);
-  }}
->
-  <i
-    className="pi pi-user-plus" // Changed icon to pi-user-plus for add friends
-    style={{ fontSize: '3.5em', color: 'var(--primary-color)' }}
-    data-pr-tooltip="Requests Friends"
-    data-pr-position="top"
-  />
-  <span className={styles.friendsText}>Request Friendship</span>
-  <Tooltip target=".pi-user-plus" />
-</div>
-<div className={styles.profileContainer}>
-  {loading ? (
-    <p>Loading...</p>
-  ) : error ? (
-    <p>{error}</p>
-  ) : showRequests && requests != null ? (
-    requests.map((user) => <RequestFriendship key={user.id} user={user} token={token} />)
-  ) : null}
-</div>
-<div
-  className={styles.friendsButton}
-  onClick={() => {
-    setShowFriends(!showFriends);
-    setShowUsers(false);
-    setShowRequests(false);
-  }}
->
-  <i
-    className="pi pi-user-plus" // Changed icon to pi-user-plus for add friends
-    style={{ fontSize: '3.5em', color: 'var(--primary-color)' }}
-    data-pr-tooltip="Add Friends"
-    data-pr-position="top"
-  />
-  <span className={styles.friendsText}>Friends</span>
-  <Tooltip target=".pi-user-plus" />
-</div>
-<div className={styles.profileContainer}>
-  {loading ? (
-    <p>Loading...</p>
-  ) : error ? (
-    <p>{error}</p>
-  ) : showFriends && friends != null ? (
-    friends.map((user) => <YourFriends key={user.id} user={user} token={token} />)
-  ) : null}
-</div>
-
-
-        
       </div>
     </>
   );
 }
-
