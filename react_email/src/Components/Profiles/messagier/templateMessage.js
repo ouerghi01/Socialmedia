@@ -1,4 +1,4 @@
-
+/* eslint-disable no-unused-vars */
 
 /*----------------------------------------------------------------
 
@@ -27,4 +27,37 @@ Acceptance Criteria:
     The footer should have an input field for typing messages and a button for sending messages.
     The layout should be responsive and adapt to different screen sizes.   
  */
-    
+ 
+
+/* data ={
+email,image
+} */
+import styles from './templateMessage.module.css';
+import React, { useState } from 'react';    
+
+const ContentChat = ({ data }) => {
+    return (
+      <div className={styles.chatContainer}>
+        <header className={styles.messageHeader}>
+          <img src={data.image} alt="profile" />
+          <h1 className={styles.nameHeader}>{data.email.substring(0, 8)}</h1>
+          <div className={styles.active}></div>
+        </header>
+        <main className={styles.messageMain}>
+          {/* Add chat messages here */}
+        </main>
+        <footer className={styles.chatFooter}>
+          <input
+            className={styles.chatInput}
+            placeholder="Enter your message"
+            type="text"
+          />
+          <button className={styles.sendButton} type="submit">
+            Send
+          </button>
+        </footer>
+      </div>
+    );
+  };
+  
+  export default ContentChat;

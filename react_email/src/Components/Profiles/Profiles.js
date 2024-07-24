@@ -4,7 +4,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styles from './Profiles.module.css';
 import MainUserInfo from './MainUser';
-
+import YourFriends from './YourFriends';
+import { useSelector } from 'react-redux';
+import { selectShareUsers } from '../../Redux/ShareUsersSlice';
+import ContentChat from './messagier/templateMessage';
 // Profile component to render individual user profile
 const Profile = ({ user, token }) => (
   <div className={styles.profile} key={user.id}>
@@ -80,21 +83,6 @@ const RequestFriendship = ({ user, token }) => (
   </div>
 );
 
-const YourFriends = ({ user, token }) => (
-  <div className={styles.profile} key={user.id}>
-    <div className={styles.profileHeader}>
-      <div className={styles.profileText}>
-        {user.email ? <p className={styles.email}>{user.email.substring(0, 7)}</p> : null}
-      </div>
-      <div className={styles.profileImage}>
-        {user.image ? <img src={user.image} alt='profile' className={styles.image} /> : null}
-      </div>
-    </div>
-    <div className={styles.chatButton}>
-      Chat your Friend
-    </div>
-  </div>
-);
 
 export default function Profiles() {
   const [users, setUsers] = useState([]);
@@ -105,15 +93,15 @@ export default function Profiles() {
   const [showFriends, setShowFriends] = useState(false);
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
+  const shareUsers = useSelector(selectShareUsers);
 
   const token = localStorage.getItem('token');
-
   // Function to get all profiles
   useEffect(() => {
     const getAllProfiles = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:8080/api/v1/Friendship/getallusers', {
+        const response = await axios.get('http://localhost:8080/api/v1/Friendship/getallusers/'+localStorage.getItem('user_id'), {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -167,15 +155,13 @@ export default function Profiles() {
 
     fetchData(); // Initial fetch
 
-    const interval = setInterval(fetchData, 5000); // Fetch every 5 seconds
-
-    return () => clearInterval(interval); // Cleanup interval on component unmount
+    
   }, [token]);
 
   return (
     <>
       <MainUserInfo />
-      <div className={styles.container}>
+      <div className={styles.container} >
         <div className={styles.sidebar}>
           <div
             className={styles.friendsButton}
@@ -224,10 +210,20 @@ export default function Profiles() {
           ) : showRequests ? (
             requests.map((user) => <RequestFriendship key={user.id} user={user} token={token} />)
           ) : showFriends ? (
-            friends.map((user) => <YourFriends key={user.id} user={user} token={token} />)
+            friends.map((user) =>   ( <>
+                                      <YourFriends key={user.id} user={user}  />
+                                      
+                                      </>  
+                                     ))
           ) : null}
         </div>
+        
       </div>
+      {   shareUsers.show && <div className={styles.ContentChat}> 
+          <ContentChat data={shareUsers} />   
+          </div> 
+ }
+
     </>
   );
 }

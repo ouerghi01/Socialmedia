@@ -52,6 +52,7 @@
   padding: 10px;
   width: 250px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  height: 113px;
 }
 
 .profileHeader {
@@ -107,4 +108,9 @@
 
 .chatButton:hover {
   background-color: #218838;
+}
+.ContentChat {
+  position: relative;
+  bottom: 0;
+  right: -750px;
 }

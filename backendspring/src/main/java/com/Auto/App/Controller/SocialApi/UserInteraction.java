@@ -1,8 +1,10 @@
 package com.Auto.App.Controller.SocialApi;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -39,21 +41,34 @@ public class UserInteraction {
         }
         return UserInfo.builder().email(user.getEmail()).id(user.getId()).image(user.getImagebase64()).build();
     }
-    
-    @GetMapping("/getallusers")
-    public List<UserInfo> getAllUsers() {
-        List<UserInfo> usersresultInfos = new ArrayList<>(); 
-        List<User> users = userRepository.findAll();
-        for(User user:users) {
-            UserInfo userInfo = UserInfo.builder()
-            .email(user.getEmail())
-            .id(user.getId())
-            .image(user.getImagebase64())
-            .build();
-            usersresultInfos.add(userInfo);
-        }
-        return usersresultInfos ;
+    private boolean isFriend(User user1, User user2) {
+        return isFriendshipAccepted(user1.getId(), user2.getId()) ||
+               isFriendshipAccepted(user2.getId(), user1.getId());
     }
+    
+    private boolean isFriendshipAccepted(UUID senderId, UUID receiverId) {
+        Friends friends = friendsRepository.sender_receiver(senderId, receiverId);
+        return friends != null && friends.isAccepted();
+    }
+    
+   @GetMapping("/getallusers/{userId}")
+public List<UserInfo> getAllUsers(@PathVariable String userId) {
+    User mainUser = userRepository.finduser(UUID.fromString(userId));
+    if (mainUser == null) {
+        return Collections.emptyList(); // Return an empty list if the user is not found
+    }
+
+    List<User> allUsers = userRepository.findAll();
+    return allUsers.stream()
+                   .filter(user -> !isFriend(mainUser, user) && !mainUser.getId().equals(user.getId()))
+                   .map(user -> UserInfo.builder()
+                                        .email(user.getEmail())
+                                        .id(user.getId())
+                                        .image(user.getImagebase64())
+                                        .build())
+                   .collect(Collectors.toList());
+}
+
     // send request for friendship
     @PostMapping("/sendrequest")
     public ResponseEntity<String> sendRequest(@RequestBody UserRequest userRequest) {
@@ -83,7 +98,7 @@ public class UserInteraction {
         friendsRepository.save(friends);
         return ResponseEntity.ok("Request accepted successfully");
     }
-// get all requests that other people have sent to the user
+
 @GetMapping("/getallrequests/{userId}")
 public List<UserInfo> getAllRequests(@PathVariable String userId) {
     User user=userRepository.finduser(UUID.fromString(userId));
@@ -102,6 +117,7 @@ public List<UserInfo> getAllRequests(@PathVariable String userId) {
     }
     return usersresultInfos ;
 }
+
 @GetMapping("/getallfriends/{userId}")
 public List<UserInfo> getAllFriends(@PathVariable String userId) {
     User user=userRepository.finduser(UUID.fromString(userId));
