@@ -1,0 +1,45 @@
+version: '3.7'
+services:
+  apachecassandra:
+    image: 'cassandra:latest'
+    container_name: 'apachecassandra'
+    ports:
+      - "9042:9042"
+   
+    environment:
+      - CASSANDRA_START_RPC=true
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "cqlsh -e 'describe keyspaces'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    
+
+  spring-app:
+    
+    ports:
+      - "8080:8080"
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        JAR_FILE: spring-email.jar
+    
+    depends_on:
+      apachecassandra:
+        condition: service_healthy
+    environment:
+      SPRING_CASSANDRA_CONTACT_POINTS: apachecassandra
+      SPRING_CASSANDRA_PORT: 9042
+      SPRING_CASSANDRA_KEYSPACE_NAME: mykey
+      SPRING_CASSANDRA_LOCAL_DATACENTER: datacenter1
+    
+  
+  react-app:
+    build: 
+      context: ../react_email
+      dockerfile: Dockerfile
+    container_name: react-app
+    ports:
+      - "3000:3000"

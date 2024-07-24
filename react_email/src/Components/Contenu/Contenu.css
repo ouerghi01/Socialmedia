@@ -1,0 +1,97 @@
+.All_contenu {
+    max-width: 90%;
+    margin: auto;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    position: relative;
+    top: 140px;
+    left: 50px;
+}
+.All_contenu  .title  {
+    font-size: 2rem;
+    color: #52cdd6;
+    position: relative;
+
+}
+
+.All_contenu .Subject,
+.All_contenu .Message,
+.All_contenu .To {
+    margin-bottom: 20px;
+}
+
+.All_contenu h1 {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: blueviolet;
+    margin-bottom: 10px;
+}
+
+.All_contenu input[type="text"],
+.All_contenu textarea{
+    width: 100%;
+    padding: 15px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+.All_contenu input[type="file"]{
+    padding: 10px;
+    border: none;
+    padding: 25px;
+    
+}
+.All_contenu textarea {
+    resize: vertical;
+    min-height: 150px;
+}
+
+.All_contenu .button_center {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.All_contenu .button_center button {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    background-color: blueviolet;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.All_contenu .button_center button:hover {
+    background-color: darkviolet;
+}
+
+@media (min-width: 768px) {
+    .All_contenu {
+        max-width: 70%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .All_contenu {
+        max-width: 50%;
+    }
+}
+#message{
+    width: 100%;
+    resize: none;
+}
+.arrow {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+  }
+  
+  .right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+  }

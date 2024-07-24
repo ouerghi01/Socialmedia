@@ -1,0 +1,17 @@
+version: '3.7'
+services:
+  apachecassandra:
+    image: 'cassandra:latest'
+    container_name: 'apachecassandra'
+    ports:
+      - "9042:9042"
+   
+    environment:
+      - CASSANDRA_START_RPC=true
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "cqlsh -e 'describe keyspaces'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    

@@ -1,0 +1,159 @@
+/* Post.css */
+
+.initial_prompt {
+    display: flex;
+    max-width: 650px;
+    max-height: 100px;
+    justify-content :left;
+    position: relative;
+    left: 500px;
+    top: 100px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    height: 100px;
+   
+}
+#const_text {
+    font-size: 17px;
+    margin-right: 8px;
+    padding-left: 10px;
+    padding-top: 7px;
+    border-radius: 15px;
+    background-color: rgba(65, 63, 63, 0.04);
+    box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 50px;
+
+}
+.initial_prompt img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+.personal_info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .personal_info img {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .personal_share {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .personal_share #username {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color:  #007bff;
+    font-style: italic;
+  }
+  
+  .personal_share select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .post {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+  }
+  
+  .post textarea {
+    width: 100%;
+    border: none;
+    resize: none;
+    outline: none;
+    font-size: 16px;
+    padding: 10px;
+  }
+  
+  .post_footer {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .post_footer input[type="file"] {
+    margin-left: 10px;
+  }
+  
+  #submitpost{
+    padding: 10px 20px;
+    width: 450px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+   
+  }
+  
+   #submitpost:hover {
+    background-color: #365899;
+  }
+  /* Modal Styles */
+.modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+  
+  .modal_content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 500px;
+    max-width: 90%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    top: -100px;
+    left: -100px;
+  }
+  
+  .close_button {
+    background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    float: right;
+    font-size: 20px;
+  }
+  
+  .close_button:hover {
+    background-color: #888;
+  }
+  .container_post {
+    display: flex;
+    max-width: 650px;
+    justify-content: center;
+    height: auto;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }

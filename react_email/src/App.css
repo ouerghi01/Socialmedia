@@ -1,0 +1,24 @@
+.App {
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.button_center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  
+}
+.costum-sign-in{
+  position: relative;
+  left: 1300px;
+  
+}
+.costum-sign-up{
+  position: relative;
+  left: 1050px;
+  
+}

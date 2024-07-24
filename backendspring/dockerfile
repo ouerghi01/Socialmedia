@@ -1,0 +1,11 @@
+FROM openjdk:17-jdk-alpine
+
+# Expose the application port and the debug port
+EXPOSE 8080 
+
+ARG JAR_FILE
+ADD target/${JAR_FILE} app.jar
+
+# Use an ENTRYPOINT to include the debug arguments conditionally
+ENTRYPOINT ["java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "-jar", "/app.jar"]
+

@@ -1,0 +1,59 @@
+{
+  "name": "react_email",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@chakra-ui/form-control": "^2.2.0",
+    "@chakra-ui/icons": "^2.1.1",
+    "@chakra-ui/react": "^2.8.2",
+    "@chakra-ui/system": "^2.6.2",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@preact/signals-react": "^2.0.2",
+    "@reduxjs/toolkit": "^2.2.5",
+    "@remix-run/router": "^1.17.1",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.7.2",
+    "formik": "^2.4.6",
+    "framer-motion": "^11.2.9",
+    "primeicons": "^7.0.0",
+    "primereact": "^10.6.6",
+    "quil": "^1.1.30",
+    "quill": "^2.0.2",
+    "react": "^18.3.1",
+    "react-bootstrap": "^2.10.2",
+    "react-dom": "^18.3.1",
+    "react-redux": "^7.2.8",
+    "react-router": "^6.24.1",
+    "react-router-dom": "^6.24.1",
+    "react-scripts": "5.0.1",
+    "react-transition-group": "^4.4.5",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
