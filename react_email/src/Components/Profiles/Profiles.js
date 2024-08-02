@@ -6,7 +6,7 @@ import styles from './Profiles.module.css';
 import MainUserInfo from './MainUser';
 import YourFriends from './YourFriends';
 import { useSelector } from 'react-redux';
-import { selectShareUsers } from '../../Redux/ShareUsersSlice';
+import { selectAllUsers } from '../../Redux/ShareUsersSlice';
 import ContentChat from './messagier/templateMessage';
 // Profile component to render individual user profile
 const Profile = ({ user, token }) => (
@@ -93,8 +93,8 @@ export default function Profiles() {
   const [showFriends, setShowFriends] = useState(false);
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
-  const shareUsers = useSelector(selectShareUsers);
-
+  const shareAllUsers = useSelector(selectAllUsers);
+  const shareUserArray = Array.from(shareAllUsers.values());
   const token = localStorage.getItem('token');
   // Function to get all profiles
   useEffect(() => {
@@ -219,10 +219,28 @@ export default function Profiles() {
         </div>
         
       </div>
-      {   shareUsers.show && <div className={styles.ContentChat}> 
-          <ContentChat data={shareUsers} />   
-          </div> 
- }
+      <div style={{
+        display: 'flex',
+        flexDirection: 'row',
+        gap: '10px',
+        width: '100%',
+        float: 'right',
+      }}>
+      {shareUserArray.length > 0 ? (
+       shareUserArray.map((shareUser, index) =>
+      shareUser.show ? (
+      <div key={index} className={styles.ContentChat}>
+        <ContentChat data={shareUser} />
+      </div>
+    ) : null
+  )
+      ) : (
+  null
+      )}
+
+      </div>
+     
+
 
     </>
   );

@@ -5,34 +5,20 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
-import org.aspectj.lang.annotation.Before;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.ApplicationRunner;
-import org.springframework.boot.autoconfigure.cassandra.CassandraProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.cassandra.SessionFactory;
 import org.springframework.data.cassandra.config.AbstractCassandraConfiguration;
 import org.springframework.data.cassandra.config.CqlSessionFactoryBean;
-import org.springframework.data.cassandra.config.SchemaAction;
 import org.springframework.data.cassandra.config.SessionBuilderConfigurer;
-import org.springframework.data.cassandra.config.SessionFactoryFactoryBean;
-import org.springframework.data.cassandra.core.CassandraOperations;
-import org.springframework.data.cassandra.core.CassandraTemplate;
-import org.springframework.data.cassandra.core.convert.CassandraConverter;
-import org.springframework.data.cassandra.core.convert.MappingCassandraConverter;
 import org.springframework.data.cassandra.core.cql.keyspace.CreateKeyspaceSpecification;
 import org.springframework.data.cassandra.core.cql.keyspace.KeyspaceOption;
 import org.springframework.data.cassandra.core.cql.session.init.ResourceKeyspacePopulator;
 import org.springframework.data.cassandra.core.cql.session.init.SessionFactoryInitializer;
-import org.springframework.data.cassandra.core.mapping.CassandraMappingContext;
-import org.springframework.data.cassandra.core.mapping.SimpleUserTypeResolver;
 import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
 
-import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.CqlSessionBuilder;
 import com.datastax.oss.driver.api.core.config.DefaultDriverOption;
 import com.datastax.oss.driver.api.core.config.DriverConfigLoader;
@@ -95,12 +81,9 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
       cassandraSession.setPort(9042);
       cassandraSession.setLocalDatacenter(localDataCenter);
       cassandraSession.setKeyspaceName(keyspace);
-      cassandraSession.setSessionBuilderConfigurer(new SessionBuilderConfigurer() {
-          @Override
-          public CqlSessionBuilder configure(CqlSessionBuilder cqlSessionBuilder) {
-              System.out.println("Configuring CqlSession Builder");
-              return cqlSessionBuilder;
-          }
+      cassandraSession.setSessionBuilderConfigurer((CqlSessionBuilder cqlSessionBuilder) -> {
+          System.out.println("Configuring CqlSession Builder");
+          return cqlSessionBuilder;
       });
 
       return cassandraSession;
@@ -151,20 +134,17 @@ public CassandraOperations cassandraTemplate(SessionFactory sessionFactory, Cass
   }
 
    
+    @Override
   protected SessionBuilderConfigurer getSessionBuilderConfigurer() {
-    return new SessionBuilderConfigurer() {
-
-      @Override
-      public CqlSessionBuilder configure(CqlSessionBuilder cqlSessionBuilder) {
+    return (CqlSessionBuilder cqlSessionBuilder) -> {
         System.out.println("Configuring CqlSession Builder");
         return cqlSessionBuilder
                 .withConfigLoader(DriverConfigLoader.programmaticBuilder()
-                // Resolves the timeout query 'SELECT * FROM system_schema.tables' timed out after PT2S
-                .withDuration(DefaultDriverOption.METADATA_SCHEMA_REQUEST_TIMEOUT, Duration.ofMillis(60000))
-                .withDuration(DefaultDriverOption.CONNECTION_INIT_QUERY_TIMEOUT, Duration.ofMillis(60000))
-                .withDuration(DefaultDriverOption.REQUEST_TIMEOUT, Duration.ofMillis(15000))
-                .build());
-      }
+                        // Resolves the timeout query 'SELECT * FROM system_schema.tables' timed out after PT2S
+                        .withDuration(DefaultDriverOption.METADATA_SCHEMA_REQUEST_TIMEOUT, Duration.ofMillis(60000))
+                        .withDuration(DefaultDriverOption.CONNECTION_INIT_QUERY_TIMEOUT, Duration.ofMillis(60000))
+                        .withDuration(DefaultDriverOption.REQUEST_TIMEOUT, Duration.ofMillis(15000))
+                        .build());
     };
   }
   

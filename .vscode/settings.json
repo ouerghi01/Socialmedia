@@ -3,9 +3,11 @@
     "java.configuration.updateBuildConfiguration": "interactive",
     "java.debug.settings.onBuildFailureProceed": true,
     "cSpell.words": [
+        "Configurer",
         "getmain",
         "Imagebas",
         "imagebase",
+        "immer",
         "mainuser",
         "messagier",
         "personel",

@@ -21,7 +21,7 @@ const YourFriends = ({ user}) => {
           </div>
           <div className={styles.chatButton} onClick={() => {
             setShowMessage(!showMessage);
-            dispatch(setShareUsers({email:user.email,image:user.image,show:showMessage}));
+            dispatch(setShareUsers({ id:user.id, email:user.email,image:user.image,show:showMessage}));
 
           }
           }

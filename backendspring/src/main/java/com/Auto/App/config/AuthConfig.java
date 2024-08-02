@@ -1,6 +1,5 @@
 package com.Auto.App.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,7 +19,6 @@ import com.Auto.App.Entity.User.UserRepository;
 public class AuthConfig {
     
     private final UserRepository userRepository;
-    @Autowired
     public AuthConfig(  UserRepository userRepository) {
         this.userRepository = userRepository;
     }

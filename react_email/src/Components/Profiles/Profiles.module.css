@@ -110,7 +110,8 @@
   background-color: #218838;
 }
 .ContentChat {
+  display: flex;
   position: relative;
   bottom: 0;
-  right: -750px;
+  right: 0;
 }

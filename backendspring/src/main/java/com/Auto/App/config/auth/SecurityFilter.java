@@ -2,12 +2,12 @@ package com.Auto.App.config.auth;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -25,7 +25,6 @@ public class SecurityFilter extends OncePerRequestFilter {
     private   final TokenProvider tokenProvider;
     private final UserDetailsService  userDetailsService;
     private final HandlerExceptionResolver handlerExceptionResolver;
-   @Autowired
    public  SecurityFilter(TokenProvider tokenProvider, UserDetailsService userDetailsService, HandlerExceptionResolver handlerExceptionResolver) {
         this.tokenProvider = tokenProvider;
         this.userDetailsService = userDetailsService;
@@ -66,7 +65,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             }
 
             filterChain.doFilter(request, response);
-        } catch (Exception exception) {
+        } catch (ServletException | IOException | UsernameNotFoundException exception) {
             handlerExceptionResolver.resolveException(request, response, null, exception);
         }
     }
