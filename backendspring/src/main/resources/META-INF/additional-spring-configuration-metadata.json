@@ -4,10 +4,24 @@
     "type": "java.lang.String",
     "description": "A description for 'spring.security.jwt.token.secret-key'"
   },
-
   {
     "name": "spring.cassandra.entity-base-package",
     "type": "java.lang.String",
     "description": "A description for 'spring.cassandra.entity-base-package'"
+  },
+  {
+    "name": "spring.docker.compose.skip.in-tests",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.docker.compose.skip.in-tests'"
+  },
+  {
+    "name": "spring.docker.compose.skip.in-tests",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.docker.compose.skip.in-tests'"
+  },
+  {
+    "name": "spring.security.jwt.token.expiration-time",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.security.jwt.token.expiration-time'"
   }
 ]}

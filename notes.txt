@@ -1,0 +1,11 @@
+
+
+# lear kafka docker compose spring boot 
+https://medium.com/@akshat.available/kafka-with-spring-boot-using-docker-compose-1552cccaec8e
+
+
+https://www.baeldung.com/spring-kafka
+
+
+https://medium.com/@abhishekranjandev/a-comprehensive-guide-to-integrating-kafka-in-a-spring-boot-application-a4b912aee62e
+also chat help me about docker compose 

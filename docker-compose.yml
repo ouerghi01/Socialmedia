@@ -5,7 +5,6 @@ services:
     container_name: 'apachecassandra'
     ports:
       - "9042:9042"
-   
     environment:
       - CASSANDRA_START_RPC=true
     restart: always
@@ -14,4 +13,57 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
-    
+
+  zookeeper:
+    image: docker.io/bitnami/zookeeper:3.8
+    container_name: 'zookeeper_spring'
+    ports:
+      - "2181:2181"
+    volumes:
+      - "zookeeper:/bitnami"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    healthcheck:
+      test: ["CMD", "sh", "-c", "echo ruok | nc 127.0.0.1 2181 | grep imok"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  kafka:
+    image: docker.io/bitnami/kafka:2.8
+    container_name: 'kafka_spring'
+    ports:
+      - "9092:9092" # Ensure this matches the external port used for clients
+      - "9093:9093" # Ensure this matches the external port used for clients
+    volumes:
+      - "kafka_data:/bitnami"
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper_spring:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://0.0.0.0:9092,PLAINTEXT_HOST://0.0.0.0:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka_spring:9092,PLAINTEXT_HOST://localhost:9093
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+      - KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+    depends_on:
+      - zookeeper
+    security_opt:
+      - no-new-privileges:false
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: 'kafka_ui'
+    depends_on:
+      - kafka
+    ports:
+      - 8090:8080 # Ensure this matches the internal port used by the kafka-ui container
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka_spring:9092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper_spring:2181
+
+volumes:
+  zookeeper:
+    driver: local
+  kafka_data:
+    driver: local

@@ -3,14 +3,19 @@
     "java.configuration.updateBuildConfiguration": "interactive",
     "java.debug.settings.onBuildFailureProceed": true,
     "cSpell.words": [
+        "cassandraconfig",
         "Configurer",
         "getmain",
         "Imagebas",
         "imagebase",
         "immer",
+        "kafkaconfig",
+        "Keyspace",
         "mainuser",
+        "messageproducer",
         "messagier",
         "personel",
+        "Populator",
         "reduxjs"
     ]
 }
